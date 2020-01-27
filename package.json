@@ -1,0 +1,9 @@
+{
+  "name": "charles-proxy-demo-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/hapi": "^19.0.5"
+  }
+}
