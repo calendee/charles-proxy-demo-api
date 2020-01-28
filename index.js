@@ -1,5 +1,6 @@
 "use strict";
 const Hapi = require("@hapi/hapi");
+require('dotenv').config()
 
 const plugins = require( "./src/plugins" );
 const UUID = require('uuid');
@@ -33,7 +34,16 @@ const init = async () => {
     handler: async (request) => {
       console.log(`GET /users at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
-      const users = await(db.get('users'));
+      const users = await(db.get('users'))
+      .catch(error => {
+        if (error.message.includes('404')) {
+          // There simply are no records in the DB
+          return [];
+        }
+        console.log('Failed to get users', error.message);
+
+        return Boom.badImplementation();
+      })
       return users;
     }
   });
@@ -45,7 +55,17 @@ const init = async () => {
       console.log(`POST /users at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
       const payload = request.payload;
-      const users = await(db.get('users'));
+      const users = await(db.get('users'))
+      .catch(error => {
+        if (error.message.includes('404')) {
+          // There simply are no records in the DB
+          return [];
+        }
+        console.log('Failed to get users', error.message);
+
+        return Boom.badImplementation();
+      })
+
       if (payload && !payload.id) {
         const id = UUID();
         const usersCopy = [...users, {...payload, id}];
