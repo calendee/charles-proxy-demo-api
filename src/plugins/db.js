@@ -1,8 +1,6 @@
 "use strict";
 const easyDB = require("easydb-io");
 require('dotenv').config();
-console.log('EASY_DB_UUID', process.env.EASY_DB_UUID)
-console.log('EASY_DB_TOKEN', process.env.EASY_DB_TOKEN)
 
 module.exports = {
    name: "easydb",
