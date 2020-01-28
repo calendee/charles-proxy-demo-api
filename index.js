@@ -21,8 +21,7 @@ const init = async () => {
     handler: async (request) => {
       console.log(`DELETE /dogs at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
-      // await(db.put('dogs', []))
-      await(db.delete('users'))
+      await(db.put('dogs', []))
       return {
         success: true
       }
