@@ -1,0 +1,6 @@
+{
+  "prettier.configPath": ".prettierrc",
+  "prettier.trailingComma": "all",
+  "editor.formatOnSave": true,
+  "prettier.packageManager": "yarn"
+}
