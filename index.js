@@ -17,11 +17,12 @@ const init = async () => {
 
   server.route({
     method: 'DELETE',
-    path: '/users',
+    path: '/dogs',
     handler: async (request) => {
-      console.log(`DELETE /users at ${new Date().toTimeString()}`);
+      console.log(`DELETE /dogs at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
-      await(db.put('users', []))
+      // await(db.put('dogs', []))
+      await(db.delete('users'))
       return {
         success: true
       }
@@ -30,51 +31,51 @@ const init = async () => {
 
   server.route({
     method: 'GET',
-    path: '/users',
+    path: '/dogs',
     handler: async (request) => {
-      console.log(`GET /users at ${new Date().toTimeString()}`);
+      console.log(`GET /dogs at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
-      const users = await(db.get('users'))
+      const dogs = await(db.get('dogs'))
       .catch(error => {
         if (error.message.includes('404')) {
           // There simply are no records in the DB
           return [];
         }
-        console.log('Failed to get users', error.message);
+        console.log('Failed to get dogs', error.message);
 
         return Boom.badImplementation();
       })
-      return users;
+      return dogs;
     }
   });
   
   server.route({
     method: 'POST',
-    path: '/users',
+    path: '/dogs',
     handler: async (request) => {
-      console.log(`POST /users at ${new Date().toTimeString()}`);
+      console.log(`POST /dogs at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
       const payload = request.payload;
-      const users = await(db.get('users'))
+      const dogs = await(db.get('dogs'))
       .catch(error => {
         if (error.message.includes('404')) {
           // There simply are no records in the DB
           return [];
         }
-        console.log('Failed to get users', error.message);
+        console.log('Failed to get dogs', error.message);
 
         return Boom.badImplementation();
       })
 
       if (payload && !payload.id) {
         const id = UUID();
-        const usersCopy = [...users, {...payload, id}];
-        await db.put('users', usersCopy)
+        const dogsCopy = [...dogs, {...payload, id}];
+        await db.put('dogs', dogsCopy)
         .catch((error) => {
-          console.log('Failed to save user', error.message)
+          console.log('Failed to save dog', error.message)
           return Boom.badImplementation();
         })
-        return usersCopy
+        return dogsCopy
       }
 
       return null;
@@ -83,29 +84,29 @@ const init = async () => {
 
   server.route({
     method: 'PUT',
-    path: '/users',
+    path: '/dogs',
     handler: async (request) => {
-      console.log(`PUT /users at ${new Date().toTimeString()}`);
+      console.log(`PUT /dogs at ${new Date().toTimeString()}`);
       const db = request.server.plugins.easydb.db;
       const payload = request.payload;
-      const users = await(db.get('users'));
+      const dogs = await(db.get('dogs'));
 
       if (payload && payload.id) {
-        const usersCopy = [...users];
-        const userIndex = usersCopy.findIndex(user => user.id === payload.id);
-        console.log('userIndex =', userIndex);
-        usersCopy[userIndex] = { ...payload}
+        const dogsCopy = [...dogs];
+        const dogIndex = dogsCopy.findIndex(dog => dog.id === payload.id);
+        console.log('dogIndex =', dogIndex);
+        dogsCopy[dogIndex] = { ...payload}
 
-        if (!Number.isInteger(userIndex)) {
+        if (!Number.isInteger(dogIndex)) {
           return Boom.badImplementation();
         }
 
-        await db.put('users', usersCopy)
+        await db.put('dogs', dogsCopy)
         .catch((error) => {
-          console.log('Failed to update user', error.message)
+          console.log('Failed to update dog', error.message)
           return Boom.badImplementation();
         })
-        return usersCopy
+        return dogsCopy
       }
       
       return null;
