@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^9.0.0",
-    "@hapi/hapi": "^19.0.5",
+    "@hapi/hapi": "^19.1.1",
     "dotenv": "^8.2.0",
     "easydb-io": "^2.0.0",
     "uuid": "^3.4.0"
